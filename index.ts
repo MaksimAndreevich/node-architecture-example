@@ -1,4 +1,4 @@
-import express from "express";
+import express, { Request, Response, NextFunction } from "express";
 import { userRouter } from "./users/users.js";
 
 const port = 8000;
@@ -16,7 +16,7 @@ app.all("/hello", (req, res, next) => {
 
 app.use("/users", userRouter);
 
-const callback = (req, res, next) => {
+const callback = (req: Request, res: Response, next: NextFunction) => {
   console.log("Wokr callback");
   next();
 };
@@ -25,13 +25,18 @@ app.get("/hello", [
   callback,
   //   callback,
   //   callback,
-  (req, res) => {
+  (req: Request, res: Response) => {
     res.send("Hello World!");
   },
 ]);
 
 app.get("/redirect", (req, res) => {
   res.redirect(301, "https://yandex.ru");
+});
+
+app.use((err: Error, req: Request, res: Response) => {
+  console.log(err.message);
+  res.status(401).send(err.message);
 });
 
 app.listen(port, () =>

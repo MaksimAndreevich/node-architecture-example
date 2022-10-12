@@ -1,0 +1,24 @@
+{
+  "name": "example-api-express",
+  "version": "1.0.0",
+  "description": "example building a node js app on express and TS",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MaksimAndreevich/example-api-express.git"
+  },
+  "author": "Maksim Efimov",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MaksimAndreevich/example-api-express/issues"
+  },
+  "homepage": "https://github.com/MaksimAndreevich/example-api-express#readme",
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}

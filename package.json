@@ -2,10 +2,11 @@
   "name": "example-api-express",
   "version": "1.0.0",
   "description": "example building a node js app on express and TS",
-  "main": "index.js",
-  "type": "module",
+  "main": "main.js",
+  "type": "commonjs",
   "scripts": {
-    "start": "node ./dist/index.js",
+    "start": "node ./dist/main.js",
+    "build": "tsc",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {

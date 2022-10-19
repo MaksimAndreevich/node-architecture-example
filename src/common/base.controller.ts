@@ -2,7 +2,7 @@ import { Router, Response } from "express";
 import { LoggerService } from "../logger/logger.service";
 import { IRoute } from "./route.interface";
 
-abstract class BaseController {
+export abstract class BaseController {
   private readonly _router: Router;
 
   constructor(private logger: LoggerService) {
@@ -18,7 +18,7 @@ abstract class BaseController {
     return res.status(code).json(message);
   }
 
-  public sok<T>(res: Response, message: T) {
+  public ok<T>(res: Response, message: T) {
     return this.send(res, 200, message);
   }
 

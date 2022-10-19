@@ -1,5 +1,6 @@
 import { NextFunction, Response, Request } from "express";
 import { BaseController } from "../common/base.controller";
+import { HTTPError } from "../errors/htpp-error.class";
 import { LoggerService } from "../logger/logger.service";
 
 export class UsersController extends BaseController {
@@ -8,6 +9,7 @@ export class UsersController extends BaseController {
     this.bindRoutes([
       { path: "/login", method: "post", func: this.login },
       { path: "/register", method: "post", func: this.register },
+      { path: "/test-error", method: "get", func: this.testExeptionFilter },
     ]);
   }
 
@@ -17,5 +19,9 @@ export class UsersController extends BaseController {
 
   register(req: Request, res: Response, next: NextFunction) {
     this.ok(res, "register");
+  }
+
+  testExeptionFilter(req: Request, res: Response, next: NextFunction) {
+    next(new HTTPError(400, "Test Error"));
   }
 }

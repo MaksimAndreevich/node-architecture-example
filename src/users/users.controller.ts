@@ -6,9 +6,10 @@ import { ILogger } from "../logger/logger.interface";
 import { LoggerService } from "../logger/logger.service";
 import { TYPES } from "../types";
 import "reflect-metadata";
+import { IUsersController } from "./users.contoller.interface";
 
 @injectable()
-export class UsersController extends BaseController {
+export class UsersController extends BaseController implements IUsersController {
   constructor(@inject(TYPES.ILogger) private loggerService: ILogger) {
     super(loggerService);
     this.bindRoutes([

@@ -12,6 +12,7 @@ import { UserService } from './users/user.service';
 import { IUserService } from './users/user.service.interface';
 import { IConfigService } from './config/config.service.interface';
 import { ConfigService } from './config/config.service';
+import { PrismaService } from './db/prisma.service';
 
 export const appBindings = new ContainerModule((bind: interfaces.Bind) => {
 	bind<ILogger>(TYPES.ILogger).to(LoggerService).inSingletonScope();
@@ -19,6 +20,7 @@ export const appBindings = new ContainerModule((bind: interfaces.Bind) => {
 	bind<IUsersController>(TYPES.UserController).to(UsersController);
 	bind<IUserService>(TYPES.UserService).to(UserService);
 	bind<IConfigService>(TYPES.ConfigService).to(ConfigService).inSingletonScope();
+	bind<PrismaService>(TYPES.PrismaService).to(PrismaService).inSingletonScope();
 	bind<App>(TYPES.Application).to(App);
 });
 

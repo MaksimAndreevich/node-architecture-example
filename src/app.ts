@@ -7,6 +7,8 @@ import { TYPES } from './types';
 import { UsersController } from './users/users.controller';
 import 'reflect-metadata';
 import { json } from 'body-parser';
+import { IConfigService } from './config/config.service.interface';
+import { PrismaService } from './db/prisma.service';
 
 @injectable()
 export class App {
@@ -18,6 +20,8 @@ export class App {
 		@inject(TYPES.ILogger) private logger: ILogger,
 		@inject(TYPES.UserController) private usersController: UsersController,
 		@inject(TYPES.ExeptionFilter) private exeptionFilter: IExeptionFilter,
+		@inject(TYPES.ConfigService) private configService: IConfigService,
+		@inject(TYPES.PrismaService) private prismaService: PrismaService,
 	) {
 		this.app = express();
 		this.port = 8000;
@@ -39,6 +43,7 @@ export class App {
 		this.useMiddleware();
 		this.useRoutes();
 		this.useExeptionFilter();
+		this.prismaService.connect();
 		this.server = this.app.listen(this.port, () =>
 			this.logger.log(`Server is work on http://localhost:${this.port} ...`),
 		);

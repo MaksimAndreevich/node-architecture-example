@@ -35,7 +35,8 @@ export class UsersController extends BaseController implements IUsersController 
 		next: NextFunction,
 	): Promise<void> {
 		const { body } = req;
-		const result = this.userService.createUser(body);
+		const result = await this.userService.createUser(body);
+
 		if (!result) return next(new HTTPError(422, 'the user already exists'));
 		this.ok(res, result);
 	}

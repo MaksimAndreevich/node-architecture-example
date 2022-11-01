@@ -12,7 +12,8 @@ export class UserService implements IUserService {
 		await newUser.setPassword(password);
 		// проверка что он есть
 		// если есть return null, если нет создаем
-		return null;
+
+		return newUser;
 	}
 	async validateUser(dto: UserLoginDto): Promise<boolean> {
 		return true;

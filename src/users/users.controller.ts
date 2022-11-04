@@ -8,14 +8,17 @@ import 'reflect-metadata';
 import { IUsersController } from './users.contoller.interface';
 import { UserLoginDto } from './dto/user-login.dto';
 import { UserRegisterDto } from './dto/user-register.dto';
-import { UserService } from './user.service';
 import { ValidateMiddleware } from '../common/validate.middleware';
+import { sign } from 'jsonwebtoken';
+import { IConfigService } from '../config/config.service.interface';
+import { IUserService } from './user.service.interface';
 
 @injectable()
 export class UsersController extends BaseController implements IUsersController {
 	constructor(
 		@inject(TYPES.ILogger) private loggerService: ILogger,
-		@inject(TYPES.UserService) private userService: UserService,
+		@inject(TYPES.UserService) private userService: IUserService,
+		@inject(TYPES.ConfigService) private configService: IConfigService,
 	) {
 		super(loggerService);
 		this.bindRoutes([
@@ -49,8 +52,10 @@ export class UsersController extends BaseController implements IUsersController 
 		const result = await this.userService.validateUser(body);
 		if (!result) return next(new HTTPError(422, 'incorrect password'));
 
-		// retutn jwt tkn
-		this.ok(res, 'Auth success!');
+		const secret = this.configService.get('SECRET');
+		const jwt = await this.signJWT(body.email, secret);
+
+		this.ok(res, { jwt });
 	}
 
 	async register(
@@ -67,5 +72,26 @@ export class UsersController extends BaseController implements IUsersController 
 
 	testExeptionFilter(req: Request, res: Response, next: NextFunction): void {
 		next(new HTTPError(400, 'Test Error'));
+	}
+
+	private async signJWT(email: string, secret: string): Promise<string> {
+		return new Promise<string>((resolve, reject) => {
+			sign(
+				{
+					email,
+					iat: Math.floor(Date.now()) / 1000,
+				},
+				secret,
+				{
+					algorithm: 'HS256',
+				},
+				(err, token) => {
+					if (err) {
+						reject(err);
+					}
+					resolve(token as string);
+				},
+			);
+		});
 	}
 }

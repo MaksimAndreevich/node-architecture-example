@@ -35,6 +35,11 @@ export class UsersController extends BaseController implements IUsersController 
 				middlewares: [new ValidateMiddleware(UserRegisterDto)],
 			},
 			{
+				path: '/info',
+				method: 'get',
+				func: this.info,
+			},
+			{
 				path: '/test-error',
 				method: 'get',
 				func: this.testExeptionFilter,
@@ -68,6 +73,11 @@ export class UsersController extends BaseController implements IUsersController 
 
 		if (!result) return next(new HTTPError(422, 'the user already exists'));
 		this.ok(res, result);
+	}
+
+	async info(req: Request, res: Response, next: NextFunction): Promise<void> {
+		const { user } = req;
+		this.ok(res, { email: user });
 	}
 
 	testExeptionFilter(req: Request, res: Response, next: NextFunction): void {
